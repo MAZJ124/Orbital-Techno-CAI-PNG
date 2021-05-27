@@ -23,49 +23,61 @@ class _HomeState extends State<Home> {
         centerTitle: true,
       ),
       body: SafeArea(
+        minimum: EdgeInsets.all(15.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.edit_location,
-                    color: Colors.green,
-                    size: 50.0,
-                  ),
-                  label: Text(
-                    'EAT',
-                    style: TextStyle(
-                      fontSize: 40.0,
-                      color: Colors.green,
+            Expanded(
+              child: TextButton.icon(
+                onPressed: () {},
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.black12),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
                     ),
                   ),
                 ),
-              ],
+                icon: Icon(
+                  Icons.edit_location,
+                  color: Colors.green,
+                  size: 50.0,
+                ),
+                label: Text(
+                  'EAT',
+                  style: TextStyle(
+                    fontSize: 40.0,
+                    color: Colors.green,
+                  ),
+                ),
+              ),
             ),
-            SizedBox(height: 80.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.edit_location,
-                    color: Colors.green,
-                    size: 50.0,
-                  ),
-                  label: Text(
-                    'STUDY',
-                    style: TextStyle(
-                      fontSize: 40.0,
-                      color: Colors.green,
+            SizedBox(height: 15.0),
+            Expanded(
+              child: TextButton.icon(
+                onPressed: () {},
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.black12),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                      ),
                     ),
+                ),
+                icon: Icon(
+                  Icons.edit_location,
+                  color: Colors.green,
+                  size: 50.0,
+                ),
+                label: Text(
+                  'STUDY',
+                  style: TextStyle(
+                    fontSize: 40.0,
+                    color: Colors.green,
                   ),
                 ),
-              ],
+              ),
             ),
           ],
         ),
@@ -73,3 +85,28 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+
+
+
+
+
+// Container(
+// color: Colors.black,
+// child: Row(
+// children: [
+// Icon(
+// Icons.edit_location,
+// size: 50.0,
+// color: Colors.green,
+// ),
+// Text(
+// "STUDY",
+// style: TextStyle(
+// fontSize: 40.0,
+// color: Colors.green,
+// ),
+// ),
+// ],
+// ),
+// ),
