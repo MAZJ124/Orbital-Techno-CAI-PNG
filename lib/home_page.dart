@@ -42,7 +42,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 icon: Icon(
-                  Icons.edit_location,
+                  Icons.fastfood_rounded,
                   color: Colors.green,
                   size: 50.0,
                 ),
@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            SizedBox(height: 15.0),
+            SizedBox(height: 5.0,),
             Expanded(
               child: TextButton.icon(
                 onPressed: () {
@@ -70,12 +70,40 @@ class _HomeState extends State<Home> {
                     ),
                 ),
                 icon: Icon(
-                  Icons.edit_location,
+                  Icons.book_rounded,
                   color: Colors.green,
                   size: 50.0,
                 ),
                 label: Text(
                   'STUDY',
+                  style: TextStyle(
+                    fontSize: 40.0,
+                    color: Colors.green,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 5.0,),
+            Expanded(
+              child: TextButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/options');
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.black12),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
+                  ),
+                ),
+                icon: Icon(
+                  Icons.list_alt_rounded,
+                  color: Colors.green,
+                  size: 50.0,
+                ),
+                label: Text(
+                  'ALL OPTIONS',
                   style: TextStyle(
                     fontSize: 40.0,
                     color: Colors.green,
