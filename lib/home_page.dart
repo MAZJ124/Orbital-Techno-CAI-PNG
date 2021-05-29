@@ -30,7 +30,9 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             Expanded(
               child: TextButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/map');
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.black12),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -56,7 +58,9 @@ class _HomeState extends State<Home> {
             SizedBox(height: 15.0),
             Expanded(
               child: TextButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/map');
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.black12),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -89,24 +93,3 @@ class _HomeState extends State<Home> {
 
 
 
-
-
-// Container(
-// color: Colors.black,
-// child: Row(
-// children: [
-// Icon(
-// Icons.edit_location,
-// size: 50.0,
-// color: Colors.green,
-// ),
-// Text(
-// "STUDY",
-// style: TextStyle(
-// fontSize: 40.0,
-// color: Colors.green,
-// ),
-// ),
-// ],
-// ),
-// ),
