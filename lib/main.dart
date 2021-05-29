@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nus_spots/blocs/application_bloc.dart';
 import 'home_page.dart';
 import 'map_page.dart';
+import 'browse.dart';
 import 'blocs/application_bloc.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class NUSpots extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => Home(),
-          '/map': (context) => Map(),
+          '/map': (context) => Browse(),//change this to preview
         },
       ),
     );
