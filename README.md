@@ -1,5 +1,5 @@
 # nus_spots
-# Oribital-Techno-CAI-PNG
+# Orbital-Techno-CAI-PNG
 Proposed Level of Achievement:
 Project Gemini
 

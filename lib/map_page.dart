@@ -69,8 +69,8 @@ class _MapState extends State<Map> {
                         mapType: MapType.normal,
                         myLocationEnabled: true,
                         initialCameraPosition: CameraPosition(
-                          //target: LatLng(applicationBloc.currentLocation.latitude, applicationBloc.currentLocation.longitude),
-                          target: LatLng(1.3384789518170104, 103.7454277134935),
+                          target: LatLng(applicationBloc.currentLocation.latitude, applicationBloc.currentLocation.longitude),
+                          //target: LatLng(1.3384789518170104, 103.7454277134935),
                           zoom: 15,
                         ),
                         onMapCreated: (GoogleMapController controller){
