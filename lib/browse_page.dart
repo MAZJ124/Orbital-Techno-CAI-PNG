@@ -74,7 +74,7 @@ class _BrowseState extends State<Browse> {
                 Expanded(
                   child: TextButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.black26),
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
                     ),
                     onPressed: () {},
                     child: Text(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nus_spots/blocs/application_bloc.dart';
 import 'home_page.dart';
 import 'map_page.dart';
-import 'browse.dart';
+import 'browse_page.dart';
 import 'blocs/application_bloc.dart';
 import 'package:provider/provider.dart';
 
