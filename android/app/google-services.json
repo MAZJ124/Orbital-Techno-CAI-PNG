@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "545419981185",
+    "project_id": "nuspots",
+    "storage_bucket": "nuspots.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:545419981185:android:91696e86231ae4dbc67880",
+        "android_client_info": {
+          "package_name": "mama.com.nus_spots"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "545419981185-15i2m2on3dcmfgbo6viqfgem44ap49ak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbJKG6Q97kA_SXrvQ_sNPV05GHJelzXR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "545419981185-15i2m2on3dcmfgbo6viqfgem44ap49ak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
