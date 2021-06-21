@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:rxdart/rxdart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:nus_spots/services/geolocator_service.dart';
@@ -14,7 +14,7 @@ class ApplicationBloc with ChangeNotifier{
   //Variables
   Position currentLocation;
   List<PlaceSearch> searchResults;
-  StreamController<Place> selectedLocation = StreamController<Place>();
+  StreamController<Place> selectedLocation = BehaviorSubject<Place>();
 
   ApplicationBloc(){
     setCurrentLocation();
