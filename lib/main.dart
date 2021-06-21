@@ -3,6 +3,7 @@ import 'package:nus_spots/blocs/application_bloc.dart';
 import 'home_page.dart';
 import 'map_page.dart';
 import 'browse_page.dart';
+import 'details_page.dart';
 import 'blocs/application_bloc.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,7 @@ class NUSpots extends StatelessWidget {
         routes: {
           '/': (context) => Home(),
           '/map': (context) => Map(),//change this to preview
-          '/options': (context) => Browse(),
+          '/options': (context) => Details(),//can change this to preview, change back to browse after
         },
       ),
     );
