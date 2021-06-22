@@ -21,8 +21,13 @@ class _BrowseState extends State<Browse> {
   ];
 
   //dropdown boxes for the different categories
-  bool firstValue = false;
-  bool secValue = false;
+  bool aircon = false;
+  bool noAircon = false;
+  bool indoors = false;
+  bool outdoors = false;
+  bool wallplugs = false;
+  bool noWallplugs = false;
+
 
 
   @override
@@ -103,33 +108,105 @@ class _BrowseState extends State<Browse> {
                 DropdownMenuItem(
                   child: Row(
                     children: <Widget>[
-                      Checkbox(
-                        value: this.firstValue,
-                        onChanged: (bool value) {
-                          setState(() {
-                            this.firstValue = value;
-                          });
-                        },
+                      StatefulBuilder(
+                        builder: (context, _setState) => Checkbox(
+                          value: this.aircon,
+                          onChanged: (bool value) {
+                            _setState(() {
+                              this.aircon = value;
+                            });
+                          },
+                        ),
                       ),
-                      Text('First'),
+                      Text('Aircon'),
                     ],
                   ),
                 ),
                 DropdownMenuItem(
                   child: Row(
                     children: <Widget>[
-                      Checkbox(
-                        value: this.secValue,
-                        onChanged: (bool value) {
-                          setState(() {
-                            this.secValue = value;
-                          });
-                        },
+                      StatefulBuilder(
+                        builder: (context, _setState) => Checkbox(
+                          value: this.noAircon,
+                          onChanged: (bool value) {
+                            _setState(() {
+                              this.noAircon = value;
+                            });
+                          },
+                        ),
                       ),
-                      Text('Second'),
+                      Text('No Aircon'),
                     ],
                   ),
-                )
+                ),
+                DropdownMenuItem(
+                  child: Row(
+                    children: <Widget>[
+                      StatefulBuilder(
+                        builder: (context, _setState) => Checkbox(
+                          value: this.indoors,
+                          onChanged: (bool value) {
+                            _setState(() {
+                              this.indoors = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Text('Indoors'),
+                    ],
+                  ),
+                ),
+                DropdownMenuItem(
+                  child: Row(
+                    children: <Widget>[
+                      StatefulBuilder(
+                        builder: (context, _setState) => Checkbox(
+                          value: this.outdoors,
+                          onChanged: (bool value) {
+                            _setState(() {
+                              this.outdoors = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Text('Outdoors'),
+                    ],
+                  ),
+                ),
+                DropdownMenuItem(
+                  child: Row(
+                    children: <Widget>[
+                      StatefulBuilder(
+                        builder: (context, _setState) => Checkbox(
+                          value: this.wallplugs,
+                          onChanged: (bool value) {
+                            _setState(() {
+                              this.wallplugs = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Text('Wallplugs'),
+                    ],
+                  ),
+                ),
+                DropdownMenuItem(
+                  child: Row(
+                    children: <Widget>[
+                      StatefulBuilder(
+                        builder: (context, _setState) => Checkbox(
+                          value: this.noWallplugs,
+                          onChanged: (bool value) {
+                            _setState(() {
+                              this.noWallplugs = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Text('No Wallplugs'),
+                    ],
+                  ),
+                ),
               ],
               onChanged: (value) {
               },

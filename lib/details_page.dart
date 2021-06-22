@@ -27,14 +27,44 @@ class _DetailsState extends State<Details> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Container( //name of location
-                child: Text(
-                  'Location name',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container( //name of location
+                    child: Text(
+                      'Location name',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
+                  TextButton.icon(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/map');
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.black12),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                    ),
+                    icon: Icon(
+                      Icons.map,
+                      color: Colors.green[700],
+                      size: 10.0,
+                    ),
+                    label: Text(
+                      'Go to Map',
+                      style: TextStyle(
+                        fontSize: 17.0,
+                        color: Colors.green[700],
+                      ),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 10),
               Container( //picture of location
