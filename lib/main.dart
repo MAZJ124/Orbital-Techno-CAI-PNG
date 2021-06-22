@@ -28,7 +28,7 @@ class NUSpots extends StatelessWidget {
         routes: {
           '/': (context) => Home(),
           '/map': (context) => Map(),//change this to preview
-          '/options': (context) => Details(),//can change this to preview, change back to browse after
+          '/options': (context) => Browse(),//can change this to preview, change back to browse after
         },
       ),
     );

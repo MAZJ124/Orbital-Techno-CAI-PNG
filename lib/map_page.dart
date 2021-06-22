@@ -117,29 +117,6 @@ class _MapState extends State<Map> {
                         );
                       },
                     ),
-
-
-                    // Container(
-                    //   height: MediaQuery.of(context).size.height,
-                    //   width: MediaQuery.of(context).size.width,
-                    //   child: GoogleMap(
-                    //     mapType: MapType.normal,
-                    //     myLocationEnabled: true,
-                    //     initialCameraPosition: CameraPosition(
-                    //       target: LatLng(
-                    //           applicationBloc.currentLocation.latitude,
-                    //           applicationBloc.currentLocation.longitude),
-                    //       //target: LatLng(1.3384789518170104, 103.7454277134935),
-                    //       zoom: 15,
-                    //     ),
-                    //     onMapCreated: (GoogleMapController controller) {
-                    //       _mapController.complete(controller);
-                    //     },
-                    //     markers: {
-                    //       marker1,
-                    //     },
-                    //   ),
-                    // ),
                     if (applicationBloc.searchResults != null &&
                         applicationBloc.searchResults.length != 0)
                       Container(
@@ -193,18 +170,11 @@ class _MapState extends State<Map> {
   }
 }
 
-Marker marker1 = Marker(
-  markerId: MarkerId('UTown starbucks'),
-  position: LatLng(1.3063730486397818, 103.7731868576717),
-  infoWindow: InfoWindow(title: 'Starbucks'),
-  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-);
-
 Marker customMarker({String markerId, double lat, double lng}) {
   return Marker(
     markerId: MarkerId(markerId),
     position: LatLng(lat, lng),
-    infoWindow: InfoWindow(title: 'Test'),
+    infoWindow: InfoWindow(title: markerId),
     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
   );
 }
