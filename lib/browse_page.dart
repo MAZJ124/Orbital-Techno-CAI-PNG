@@ -20,6 +20,11 @@ class _BrowseState extends State<Browse> {
     'Central Library'
   ];
 
+  //dropdown boxes for the different categories
+  bool firstValue = false;
+  bool secValue = false;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,6 +97,44 @@ class _BrowseState extends State<Browse> {
               ],
             ),
             SizedBox(height: 15.0),
+            //dropdown of categories
+            DropdownButton(
+              items: [
+                DropdownMenuItem(
+                  child: Row(
+                    children: <Widget>[
+                      Checkbox(
+                        value: this.firstValue,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.firstValue = value;
+                          });
+                        },
+                      ),
+                      Text('First'),
+                    ],
+                  ),
+                ),
+                DropdownMenuItem(
+                  child: Row(
+                    children: <Widget>[
+                      Checkbox(
+                        value: this.secValue,
+                        onChanged: (bool value) {
+                          setState(() {
+                            this.secValue = value;
+                          });
+                        },
+                      ),
+                      Text('Second'),
+                    ],
+                  ),
+                )
+              ],
+              onChanged: (value) {
+              },
+              hint: Text('Select tags/categories'),
+            ),
             Expanded(
               // child: ListView.builder(
               //   itemCount: locations.length,
