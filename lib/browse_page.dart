@@ -29,7 +29,6 @@ class _BrowseState extends State<Browse> {
   bool noWallplugs = false;
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -244,7 +243,9 @@ class _BrowseState extends State<Browse> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18.0),
                           ),
-                          onPressed: (){},
+                          onPressed: (){
+                            Navigator.pushNamed(context, '/details');
+                          },
                           // width: MediaQuery.of(context).size.width / 1.2,
                           // height: MediaQuery.of(context).size.height/ 6,
                           child: SizedBox(
