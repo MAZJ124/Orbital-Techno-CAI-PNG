@@ -19,10 +19,14 @@ class _MapState extends State<Map> {
 
   @override
   void initState() {
-    final applicationBloc = Provider.of<ApplicationBloc>(context, listen: false,);
+    final applicationBloc = Provider.of<ApplicationBloc>(
+      context,
+      listen: false,
+    );
 
-    locationSubscription = applicationBloc.selectedLocation.stream.listen((place) {
-      if (place != null){
+    locationSubscription =
+        applicationBloc.selectedLocation.stream.listen((place) {
+      if (place != null) {
         _goToPlace(place);
       }
     });
@@ -30,8 +34,11 @@ class _MapState extends State<Map> {
   }
 
   @override
-  void dispose(){
-    final applicationBloc = Provider.of<ApplicationBloc>(context, listen: false,);
+  void dispose() {
+    final applicationBloc = Provider.of<ApplicationBloc>(
+      context,
+      listen: false,
+    );
     applicationBloc.dispose();
     locationSubscription.cancel();
     super.dispose();
@@ -64,17 +71,23 @@ class _MapState extends State<Map> {
                 Stack(
                   children: [
                     Container(
-                      height: 300.0,
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
                       child: GoogleMap(
                         mapType: MapType.normal,
                         myLocationEnabled: true,
                         initialCameraPosition: CameraPosition(
-                          target: LatLng(applicationBloc.currentLocation.latitude, applicationBloc.currentLocation.longitude),
+                          target: LatLng(
+                              applicationBloc.currentLocation.latitude,
+                              applicationBloc.currentLocation.longitude),
                           //target: LatLng(1.3384789518170104, 103.7454277134935),
                           zoom: 15,
                         ),
-                        onMapCreated: (GoogleMapController controller){
+                        onMapCreated: (GoogleMapController controller) {
                           _mapController.complete(controller);
+                        },
+                        markers: {
+                          marker1,
                         },
                       ),
                     ),
@@ -96,7 +109,7 @@ class _MapState extends State<Map> {
                           itemCount: applicationBloc.searchResults.length,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              onTap: (){
+                              onTap: () {
                                 applicationBloc.setSelectedLocation(
                                   applicationBloc.searchResults[index].placeId,
                                 );
@@ -122,10 +135,18 @@ class _MapState extends State<Map> {
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          target: LatLng(place.geometry.location.lat, place.geometry.location.lng),
+          target:
+              LatLng(place.geometry.location.lat, place.geometry.location.lng),
           zoom: 14.0,
         ),
       ),
     );
   }
 }
+
+Marker marker1 = Marker(
+  markerId: MarkerId('UTown starbucks'),
+  position: LatLng(1.3063730486397818, 103.7731868576717),
+  infoWindow: InfoWindow(title: 'Starbucks'),
+  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+);
