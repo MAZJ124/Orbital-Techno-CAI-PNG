@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,6 +17,7 @@ class Map extends StatefulWidget {
 class _MapState extends State<Map> {
   Completer<GoogleMapController> _mapController = Completer();
   StreamSubscription locationSubscription;
+  final fireStore = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -70,27 +72,74 @@ class _MapState extends State<Map> {
                 ),
                 Stack(
                   children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      child: GoogleMap(
-                        mapType: MapType.normal,
-                        myLocationEnabled: true,
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(
-                              applicationBloc.currentLocation.latitude,
-                              applicationBloc.currentLocation.longitude),
-                          //target: LatLng(1.3384789518170104, 103.7454277134935),
-                          zoom: 15,
-                        ),
-                        onMapCreated: (GoogleMapController controller) {
-                          _mapController.complete(controller);
-                        },
-                        markers: {
-                          marker1,
-                        },
-                      ),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: fireStore.collection('locations').snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.lightBlueAccent,
+                            ),
+                          );
+                        }
+                        final locations = snapshot.data.docs;
+                        Set<Marker> set = {};
+
+                        for (var location in locations) {
+                          final markerId = location['name'];
+                          final lat = location['lat'];
+                          final lng = location['lng'];
+                          final marker = customMarker(
+                            markerId: markerId,
+                            lat: lat,
+                            lng: lng,
+                          );
+                          set.add(marker);
+                        }
+                        return Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          child: GoogleMap(
+                            mapType: MapType.normal,
+                            myLocationEnabled: true,
+                            initialCameraPosition: CameraPosition(
+                              target: LatLng(
+                                  applicationBloc.currentLocation.latitude,
+                                  applicationBloc.currentLocation.longitude),
+                              //target: LatLng(1.3384789518170104, 103.7454277134935),
+                              zoom: 15,
+                            ),
+                            onMapCreated: (GoogleMapController controller) {
+                              _mapController.complete(controller);
+                            },
+                            markers: set,
+                          ),
+                        );
+                      },
                     ),
+
+
+                    // Container(
+                    //   height: MediaQuery.of(context).size.height,
+                    //   width: MediaQuery.of(context).size.width,
+                    //   child: GoogleMap(
+                    //     mapType: MapType.normal,
+                    //     myLocationEnabled: true,
+                    //     initialCameraPosition: CameraPosition(
+                    //       target: LatLng(
+                    //           applicationBloc.currentLocation.latitude,
+                    //           applicationBloc.currentLocation.longitude),
+                    //       //target: LatLng(1.3384789518170104, 103.7454277134935),
+                    //       zoom: 15,
+                    //     ),
+                    //     onMapCreated: (GoogleMapController controller) {
+                    //       _mapController.complete(controller);
+                    //     },
+                    //     markers: {
+                    //       marker1,
+                    //     },
+                    //   ),
+                    // ),
                     if (applicationBloc.searchResults != null &&
                         applicationBloc.searchResults.length != 0)
                       Container(
@@ -150,3 +199,12 @@ Marker marker1 = Marker(
   infoWindow: InfoWindow(title: 'Starbucks'),
   icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
 );
+
+Marker customMarker({String markerId, double lat, double lng}) {
+  return Marker(
+    markerId: MarkerId(markerId),
+    position: LatLng(lat, lng),
+    infoWindow: InfoWindow(title: 'Test'),
+    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+  );
+}

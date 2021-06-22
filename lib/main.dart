@@ -6,8 +6,15 @@ import 'browse_page.dart';
 import 'details_page.dart';
 import 'blocs/application_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(NUSpots());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(NUSpots());
+}
+
 
 class NUSpots extends StatelessWidget {
   const NUSpots({Key key}) : super(key: key);
