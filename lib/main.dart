@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nus_spots/blocs/application_bloc.dart';
+import 'package:nus_spots/models/user.dart';
+import 'package:nus_spots/services/auth_service.dart';
+import 'package:nus_spots/wrapper.dart';
 import 'home_page.dart';
 import 'map_page.dart';
 import 'browse_page.dart';
@@ -23,14 +26,20 @@ class NUSpots extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => ApplicationBloc(),
-      child: MaterialApp(
-        initialRoute: '/',
-        routes: {
-          '/': (context) => Home(),
-          '/map': (context) => Map(),//change this to preview
-          '/options': (context) => Browse(),
-          '/details': (context) => Details(),
-        },
+      child: StreamProvider<NUSer>.value(
+        catchError: (_,__) => null,
+        initialData: null,
+        value: AuthService().user,
+        child: MaterialApp(
+          initialRoute: '/wrapper',
+          routes: {
+            '/wrapper': (context) => Wrapper(),
+            '/home': (context) => Home(),
+            '/map': (context) => Map(),//change this to preview
+            '/options': (context) => Browse(),
+            '/details': (context) => Details(),
+          },
+        ),
       ),
     );
   }

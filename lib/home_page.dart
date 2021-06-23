@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nus_spots/services/auth_service.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
@@ -8,6 +9,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +25,23 @@ class _HomeState extends State<Home> {
         ),
         backgroundColor: Colors.green,
         centerTitle: true,
+        actions: <Widget>[
+          TextButton.icon(
+            icon: Icon(
+              Icons.person,
+              color: Colors.black,
+            ),
+            label: Text(
+              'Log Out',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            onPressed: () async {
+              await _auth.signOut();
+            },
+          )
+        ],
       ),
       body: SafeArea(
         minimum: EdgeInsets.all(15.0),
