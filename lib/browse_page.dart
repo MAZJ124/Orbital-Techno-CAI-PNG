@@ -9,16 +9,11 @@ class Browse extends StatefulWidget {
 }
 
 class _BrowseState extends State<Browse> {
-
   final fireStore = FirebaseFirestore.instance;
-
-  List<String> locations = [
-    'TechnoEdge',
-    'The Deck',
-    'E2 Canteen',
-    'Yusof Ishak House Canteen',
-    'Central Library'
-  ];
+  Future resultsLoaded;
+  List _allResults = [];
+  List _resultsList = [];
+  TextEditingController _searchController = TextEditingController();
 
   //dropdown boxes for the different categories
   bool aircon = false;
@@ -28,6 +23,56 @@ class _BrowseState extends State<Browse> {
   bool wallplugs = false;
   bool noWallplugs = false;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  _onSearchChanged() {
+    searchResultsList();
+  }
+
+  searchResultsList() {
+    var showResults = [];
+    if (_searchController.text != "") {
+      for (var location in _allResults) {
+        var title = location['name'].toLowerCase();
+        if (title.contains(_searchController.text.toLowerCase())) {
+          showResults.add(location);
+        }
+      }
+    } else {
+      showResults = List.from(_allResults);
+    }
+    setState(() {
+      _resultsList = showResults;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    resultsLoaded = getLocations();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  getLocations() async {
+    var data = await fireStore.collection('locations').get();
+    setState(() {
+      _allResults = data.docs;
+    });
+    searchResultsList();
+    return 'done';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +94,26 @@ class _BrowseState extends State<Browse> {
           //mainAxisAlignment: MainAxisAlignment.center,
           //crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _searchController,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: ' Search',
+                  suffixIcon: Icon(
+                    Icons.search,
+                  ),
+                ),
+              ),
+            ),
             Row(
               children: <Widget>[
                 Expanded(
                   child: TextButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.black26),
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.black26),
                     ),
                     onPressed: () {},
                     child: Text(
@@ -70,7 +129,8 @@ class _BrowseState extends State<Browse> {
                 Expanded(
                   child: TextButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.black26),
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.black26),
                     ),
                     onPressed: () {},
                     child: Text(
@@ -207,57 +267,21 @@ class _BrowseState extends State<Browse> {
                   ),
                 ),
               ],
-              onChanged: (value) {
-              },
+              onChanged: (value) {},
               hint: Text('Select tags/categories'),
             ),
             Expanded(
-              // child: ListView.builder(
-              //   itemCount: locations.length,
-              //   itemBuilder: (context, index) {
-              //     return Card(
-              //       child: ListTile(
-              //         onTap: () {},
-              //         title: Text(locations[index]),
-              //         trailing: Icon(Icons.keyboard_arrow_right),
-              //       ),
-              //     );
-              //   }
-              // ),
-              child: StreamBuilder(
-                stream: fireStore.collection('locations').snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.lightBlueAccent,
-                      ),
-                    );
-                  }
-
-                  return ListView(
-                    children: snapshot.data.docs.map<Widget>((doc){
-                      return Center(
-                        child: MaterialButton(
-                          color: Colors.black12,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          onPressed: (){
-                            Navigator.pushNamed(context, '/details');
-                          },
-                          // width: MediaQuery.of(context).size.width / 1.2,
-                          // height: MediaQuery.of(context).size.height/ 6,
-                          child: SizedBox(
-                            child: Text(doc['name']),
-                            width: double.infinity,
-                          ),
-                        ),
-                      );
-                    }).toList(),
+              child: ListView.builder(
+                itemCount: _resultsList.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ListTile(
+                      onTap: () {},
+                      title: Text(_resultsList[index]['name']),
+                      trailing: Icon(Icons.keyboard_arrow_right),
+                    ),
                   );
                 },
-
               ),
             )
           ],
