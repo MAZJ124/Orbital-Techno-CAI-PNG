@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'globals.dart';
 
 class Details extends StatefulWidget {
   const Details({Key key}) : super(key: key);
@@ -32,7 +33,7 @@ class _DetailsState extends State<Details> {
                 children: [
                   Container( //name of location
                     child: Text(
-                      'Location name',
+                      '$locationName',
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -68,7 +69,8 @@ class _DetailsState extends State<Details> {
               ),
               SizedBox(height: 10),
               Container( //picture of location
-                child: Placeholder(fallbackHeight: 150)
+                child: Image.network(imageURL),
+                // child: Placeholder(fallbackHeight: 150)
               ),
               SizedBox(height : 20),
               Align(

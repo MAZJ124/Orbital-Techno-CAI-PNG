@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'globals.dart';
 
 class Browse extends StatefulWidget {
   const Browse({Key key}) : super(key: key);
@@ -276,7 +277,11 @@ class _BrowseState extends State<Browse> {
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      onTap: () {},
+                      onTap: () {
+                        locationName = _resultsList[index]['name'];
+                        imageURL = _resultsList[index]['image'];
+                        Navigator.pushNamed(context, '/details');
+                      },
                       title: Text(_resultsList[index]['name']),
                       trailing: Icon(Icons.keyboard_arrow_right),
                     ),
