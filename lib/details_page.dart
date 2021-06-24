@@ -250,6 +250,7 @@ class _DetailsState extends State<Details> {
                     //   ),
                     // ),
                     Tags(
+                      itemCount: tags.length,
                       key: _globalKey,
                       columns: 3,
                       itemBuilder: (index) {
