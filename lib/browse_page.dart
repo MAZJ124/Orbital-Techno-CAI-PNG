@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:nus_spots/models/user.dart';
 import 'globals.dart';
+
+final locationsRef = FirebaseFirestore.instance.collection('locations');
+final commentsRef = FirebaseFirestore.instance.collection('comments');
+NUSer currentUser;
 
 class Browse extends StatefulWidget {
   const Browse({Key key}) : super(key: key);
@@ -15,6 +20,7 @@ class _BrowseState extends State<Browse> {
   List _allResults = [];
   List _resultsList = [];
   TextEditingController _searchController = TextEditingController();
+
 
   //dropdown boxes for the different categories
   bool aircon = false;
@@ -278,9 +284,9 @@ class _BrowseState extends State<Browse> {
                   return Card(
                     child: ListTile(
                       onTap: () {
+                        locationID = _resultsList[index]['locationID'];
                         locationName = _resultsList[index]['name'];
                         imageURL = _resultsList[index]['image'];
-                        tags = List.from(_resultsList[index]['tags']);
                         Navigator.pushNamed(context, '/details');
                       },
                       title: Text(_resultsList[index]['name']),
