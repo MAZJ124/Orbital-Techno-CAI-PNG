@@ -280,6 +280,7 @@ class _BrowseState extends State<Browse> {
                       onTap: () {
                         locationName = _resultsList[index]['name'];
                         imageURL = _resultsList[index]['image'];
+                        tags = List.from(_resultsList[index]['tags']);
                         Navigator.pushNamed(context, '/details');
                       },
                       title: Text(_resultsList[index]['name']),

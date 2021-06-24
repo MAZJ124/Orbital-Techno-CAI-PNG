@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'globals.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 
 class Details extends StatefulWidget {
   const Details({Key key}) : super(key: key);
@@ -9,6 +10,9 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
+
+  final GlobalKey<TagsState> _globalKey = GlobalKey<TagsState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,118 +97,129 @@ class _DetailsState extends State<Details> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                  children: <Widget>[
-                   Row( //1st row
-                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                     children: <Widget>[
-                       Container(
-                       padding: EdgeInsets.all(10.0),
-                       decoration: BoxDecoration(
-                         color: Colors.blue[100],
-                         border: Border.all(
-                           color: Colors.black12,
-                         ),
-                         borderRadius: BorderRadius.all(Radius.circular(20))
-                       ),
-                         child: Text(
-                             'study',
-                           style: TextStyle(
-                             fontSize: 18.0,
-                             fontWeight: FontWeight.bold,
-                           ),
-                         ),
-                       ),
-                       Container(
-                         padding: EdgeInsets.all(10.0),
-                         decoration: BoxDecoration(
-                             color: Colors.blue[100],
-                             border: Border.all(
-                               color: Colors.black12,
-                             ),
-                             borderRadius: BorderRadius.all(Radius.circular(20))
-                         ),
-                         child: Text(
-                           'aircon',
-                           style: TextStyle(
-                             fontSize: 18.0,
-                             fontWeight: FontWeight.bold,
-                           ),
-                         ),
-                       ),
-                       Container(
-                         padding: EdgeInsets.all(10.0),
-                         decoration: BoxDecoration(
-                             color: Colors.blue[100],
-                             border: Border.all(
-                               color: Colors.black12,
-                             ),
-                             borderRadius: BorderRadius.all(Radius.circular(20))
-                         ),
-                         child: Text(
-                           'indoor',
-                           style: TextStyle(
-                             fontSize: 18.0,
-                             fontWeight: FontWeight.bold,
-                           ),
-                         ),
-                       ),
-                     ],
-                   ),
-                   SizedBox(height: 20),
-                   Row( //2nd row
-                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                     children: <Widget>[
-                       Container(
-                         padding: EdgeInsets.all(10.0),
-                         decoration: BoxDecoration(
-                             color: Colors.blue[100],
-                             border: Border.all(
-                               color: Colors.black12,
-                             ),
-                             borderRadius: BorderRadius.all(Radius.circular(20))
-                         ),
-                         child: Text(
-                           'wallplugs',
-                           style: TextStyle(
-                             fontSize: 18.0,
-                             fontWeight: FontWeight.bold,
-                           ),
-                         ),
-                       ),
-                       Container(
-                         padding: EdgeInsets.all(10.0),
-                         decoration: BoxDecoration(
-                             color: Colors.blue[100],
-                             border: Border.all(
-                               color: Colors.black12,
-                             ),
-                             borderRadius: BorderRadius.all(Radius.circular(20))
-                         ),
-                         child: Text(
-                           'Engineering',
-                           style: TextStyle(
-                             fontSize: 18.0,
-                             fontWeight: FontWeight.bold,
-                           ),
-                         ),
-                       ),
-                       Container(
-                         padding: EdgeInsets.all(10.0),
-                         decoration: BoxDecoration(
-                             color: Colors.blue[100],
-                             border: Border.all(
-                               color: Colors.black12,
-                             ),
-                             borderRadius: BorderRadius.all(Radius.circular(20))
-                         ),
-                         child: Text(
-                           'IT',
-                           style: TextStyle(
-                             fontSize: 18.0,
-                             fontWeight: FontWeight.bold,
-                           ),
-                         ),
-                       ),
-                     ],
+                   // Row( //1st row
+                   //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                   //   children: <Widget>[
+                   //     Container(
+                   //     padding: EdgeInsets.all(10.0),
+                   //     decoration: BoxDecoration(
+                   //       color: Colors.blue[100],
+                   //       border: Border.all(
+                   //         color: Colors.black12,
+                   //       ),
+                   //       borderRadius: BorderRadius.all(Radius.circular(20))
+                   //     ),
+                   //       child: Text(
+                   //           'study',
+                   //         style: TextStyle(
+                   //           fontSize: 18.0,
+                   //           fontWeight: FontWeight.bold,
+                   //         ),
+                   //       ),
+                   //     ),
+                   //     Container(
+                   //       padding: EdgeInsets.all(10.0),
+                   //       decoration: BoxDecoration(
+                   //           color: Colors.blue[100],
+                   //           border: Border.all(
+                   //             color: Colors.black12,
+                   //           ),
+                   //           borderRadius: BorderRadius.all(Radius.circular(20))
+                   //       ),
+                   //       child: Text(
+                   //         'aircon',
+                   //         style: TextStyle(
+                   //           fontSize: 18.0,
+                   //           fontWeight: FontWeight.bold,
+                   //         ),
+                   //       ),
+                   //     ),
+                   //     Container(
+                   //       padding: EdgeInsets.all(10.0),
+                   //       decoration: BoxDecoration(
+                   //           color: Colors.blue[100],
+                   //           border: Border.all(
+                   //             color: Colors.black12,
+                   //           ),
+                   //           borderRadius: BorderRadius.all(Radius.circular(20))
+                   //       ),
+                   //       child: Text(
+                   //         'indoor',
+                   //         style: TextStyle(
+                   //           fontSize: 18.0,
+                   //           fontWeight: FontWeight.bold,
+                   //         ),
+                   //       ),
+                   //     ),
+                   //   ],
+                   // ),
+                   // SizedBox(height: 20),
+                   // Row( //2nd row
+                   //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                   //   children: <Widget>[
+                   //     Container(
+                   //       padding: EdgeInsets.all(10.0),
+                   //       decoration: BoxDecoration(
+                   //           color: Colors.blue[100],
+                   //           border: Border.all(
+                   //             color: Colors.black12,
+                   //           ),
+                   //           borderRadius: BorderRadius.all(Radius.circular(20))
+                   //       ),
+                   //       child: Text(
+                   //         'wallplugs',
+                   //         style: TextStyle(
+                   //           fontSize: 18.0,
+                   //           fontWeight: FontWeight.bold,
+                   //         ),
+                   //       ),
+                   //     ),
+                   //     Container(
+                   //       padding: EdgeInsets.all(10.0),
+                   //       decoration: BoxDecoration(
+                   //           color: Colors.blue[100],
+                   //           border: Border.all(
+                   //             color: Colors.black12,
+                   //           ),
+                   //           borderRadius: BorderRadius.all(Radius.circular(20))
+                   //       ),
+                   //       child: Text(
+                   //         'Engineering',
+                   //         style: TextStyle(
+                   //           fontSize: 18.0,
+                   //           fontWeight: FontWeight.bold,
+                   //         ),
+                   //       ),
+                   //     ),
+                   //     Container(
+                   //       padding: EdgeInsets.all(10.0),
+                   //       decoration: BoxDecoration(
+                   //           color: Colors.blue[100],
+                   //           border: Border.all(
+                   //             color: Colors.black12,
+                   //           ),
+                   //           borderRadius: BorderRadius.all(Radius.circular(20))
+                   //       ),
+                   //       child: Text(
+                   //         'IT',
+                   //         style: TextStyle(
+                   //           fontSize: 18.0,
+                   //           fontWeight: FontWeight.bold,
+                   //         ),
+                   //       ),
+                   //     ),
+                   //   ],
+                   // ),
+                   Tags(
+                     key: _globalKey,
+                     itemCount: tags.length,
+                     columns: 3,
+                     itemBuilder: (index){
+                       return ItemTags(
+                         index: index,
+                         title: tags[index],
+                       );
+                     },
                    ),
                  ],
                 ),

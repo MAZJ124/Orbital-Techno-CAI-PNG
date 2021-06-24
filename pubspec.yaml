@@ -35,6 +35,7 @@ dependencies:
   firebase_auth: ^1.4.1
   cloud_firestore: ^2.2.2
   rxdart: ^0.27.1
+  flutter_tags: ^0.4.9+1
 
 dev_dependencies:
   flutter_test:
