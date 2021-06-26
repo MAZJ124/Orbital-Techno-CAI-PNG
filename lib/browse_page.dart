@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:nus_spots/models/user.dart';
 import 'globals.dart';
 
+
 final locationsRef = FirebaseFirestore.instance.collection('locations');
 final commentsRef = FirebaseFirestore.instance.collection('comments');
+
+final DateTime timestamp = DateTime.now();
+
 NUSer currentUser;
 
 class Browse extends StatefulWidget {

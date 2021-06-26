@@ -18,6 +18,7 @@ class _RegisterState extends State<Register> {
 
   // text field state
   String email = '';
+  String username = '';
   String password = '';
   String error = '';
 
@@ -59,6 +60,16 @@ class _RegisterState extends State<Register> {
                   )
               ),
               SizedBox(height: 20.0),
+              /*TextFormField(
+                  validator: (val) => val.isEmpty ? 'Enter username' : null,
+                  onChanged: (val) {
+                    setState(() => email = val);
+                  },
+                  decoration: new InputDecoration(
+                      hintText: 'Create Username'
+                  )
+              ),
+              SizedBox(height: 20.0),*/
               TextFormField(
                 obscureText: true,
                 validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,

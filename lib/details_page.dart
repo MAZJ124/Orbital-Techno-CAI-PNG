@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'globals.dart';
 import 'browse_page.dart';
 import 'package:flutter_tags/flutter_tags.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class Details extends StatefulWidget {
   const Details({Key key}) : super(key: key);
@@ -18,7 +19,8 @@ class _DetailsState extends State<Details> {
 
   buildComments() {
     return StreamBuilder(
-        stream: commentsRef.doc(locationID).collection('comments').snapshots(),
+        stream: commentsRef.doc(locationID).collection('comments').
+        orderBy("timestamp", descending: false).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return CircularProgressIndicator();
@@ -40,9 +42,22 @@ class _DetailsState extends State<Details> {
     commentsRef.doc(locationID).collection("comments").add({
       //"username": currentUser.username,
       "comment": commentController.text,
-      //"timestamp": timestamp
+      "timestamp": timestamp,
+      //"userID": currentUser.uid,
     });
     commentController.clear();
+  }
+
+  //TODO: implement ownerID and currentUserID check for this
+  deleteComment( ) {
+    commentsRef.doc(locationID)
+        .collection('comments')
+        .doc()
+        .get().then((doc) {
+      if (doc.exists) {
+        doc.reference.delete();
+      }
+    });
   }
 
   @override
@@ -133,122 +148,6 @@ class _DetailsState extends State<Details> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    //      Row( //1st row
-                    //        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //        children: <Widget>[
-                    //          Container(
-                    //          padding: EdgeInsets.all(10.0),
-                    //          decoration: BoxDecoration(
-                    //            color: Colors.blue[100],
-                    //            border: Border.all(
-                    //              color: Colors.black12,
-                    //            ),
-                    //            borderRadius: BorderRadius.all(Radius.circular(20))
-                    //          ),
-                    //            child: Text(
-                    //                'study',
-                    //              style: TextStyle(
-                    //                fontSize: 18.0,
-                    //                fontWeight: FontWeight.bold,
-                    //              ),
-                    //            ),
-                    //          ),
-                    //          Container(
-                    //            padding: EdgeInsets.all(10.0),
-                    //            decoration: BoxDecoration(
-                    //                color: Colors.blue[100],
-                    //                border: Border.all(
-                    //                  color: Colors.black12,
-                    //                ),
-                    //                borderRadius: BorderRadius.all(Radius.circular(20))
-                    //            ),
-                    //            child: Text(
-                    //              'aircon',
-                    //              style: TextStyle(
-                    //                fontSize: 18.0,
-                    //                fontWeight: FontWeight.bold,
-                    //              ),
-                    //            ),
-                    //          ),
-                    //          Container(
-                    //            padding: EdgeInsets.all(10.0),
-                    //            decoration: BoxDecoration(
-                    //                color: Colors.blue[100],
-                    //                border: Border.all(
-                    //                  color: Colors.black12,
-                    //                ),
-                    //                borderRadius: BorderRadius.all(Radius.circular(20))
-                    //            ),
-                    //            child: Text(
-                    //              'indoor',
-                    //              style: TextStyle(
-                    //                fontSize: 18.0,
-                    //                fontWeight: FontWeight.bold,
-                    //              ),
-                    //            ),
-                    //          ),
-                    //        ],
-                    //      ),
-                    //      SizedBox(height: 20),
-                    //      Row( //2nd row
-                    //        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //        children: <Widget>[
-                    //          Container(
-                    //            padding: EdgeInsets.all(10.0),
-                    //            decoration: BoxDecoration(
-                    //                color: Colors.blue[100],
-                    //                border: Border.all(
-                    //                  color: Colors.black12,
-                    //                ),
-                    //                borderRadius: BorderRadius.all(Radius.circular(20))
-                    //            ),
-                    //            child: Text(
-                    //              'wallplugs',
-                    //              style: TextStyle(
-                    //                fontSize: 18.0,
-                    //                fontWeight: FontWeight.bold,
-                    //              ),
-                    //            ),
-                    //          ),
-                    //          Container(
-                    //            padding: EdgeInsets.all(10.0),
-                    //            decoration: BoxDecoration(
-                    //                color: Colors.blue[100],
-                    //                border: Border.all(
-                    //                  color: Colors.black12,
-                    //                ),
-                    //                borderRadius: BorderRadius.all(Radius.circular(20))
-                    //            ),
-                    //            child: Text(
-                    //              'Engineering',
-                    //              style: TextStyle(
-                    //                fontSize: 18.0,
-                    //                fontWeight: FontWeight.bold,
-                    //              ),
-                    //            ),
-                    //          ),
-                    //          Container(
-                    //            padding: EdgeInsets.all(10.0),
-                    //            decoration: BoxDecoration(
-                    //                color: Colors.blue[100],
-                    //                border: Border.all(
-                    //                  color: Colors.black12,
-                    //                ),
-                    //                borderRadius: BorderRadius.all(Radius.circular(20))
-                    //            ),
-                    //            child: Text(
-                    //              'IT',
-                    //              style: TextStyle(
-                    //                fontSize: 18.0,
-                    //                fontWeight: FontWeight.bold,
-                    //              ),
-                    //            ),
-                    //          ),
-                    //        ],
-                    //      ),
-                    //    ],
-                    //   ),
-                    // ),
                     Tags(
                       itemCount: tags.length,
                       key: _globalKey,
@@ -307,12 +206,18 @@ class Comment extends StatelessWidget {
   final String comment;
 
   //final String username;
-  //final Timestamp timestamp;
+  final Timestamp timestamp;
 
-  Comment({this.comment});
+  Comment({
+    this.comment,
+    this.timestamp
+  });
 
   factory Comment.fromDocument(DocumentSnapshot doc) {
-    return Comment(comment: doc['comment']);
+    return Comment(
+        comment: doc['comment'],
+        timestamp: doc['timestamp']
+    );
   }
 
   @override
@@ -322,9 +227,49 @@ class Comment extends StatelessWidget {
         ListTile(
           title: Text(comment),
           //leading, image...
+          subtitle: Text(timeago.format(timestamp.toDate())),
+          trailing: IconButton(
+            onPressed: () => deleteEditComment(context),
+            icon: Icon(Icons.more_vert),
+          ),
         ),
         Divider(),
       ],
     );
   }
 }
+
+deleteEditComment(BuildContext parentContext) {
+  return showDialog(
+    context: parentContext,
+    builder: (context) {
+      return SimpleDialog(
+        children: <Widget> [
+          SimpleDialogOption(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+            child: Text('Delete comment',
+              style: TextStyle(color: Colors.red),
+            )
+          ),
+          SimpleDialogOption(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+              child: Text('Edit comment',
+                style: TextStyle(color: Colors.red),
+              )
+          ),
+          SimpleDialogOption(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel',
+                style: TextStyle(color: Colors.red),
+              )
+          ),
+        ],
+      );
+    }
+  );
+}
+

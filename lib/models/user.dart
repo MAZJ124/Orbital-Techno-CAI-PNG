@@ -1,6 +1,9 @@
 class NUSer {
   final String uid;
-
-  NUSer({ this.uid });
+  //final String username;
+  NUSer({
+    this.uid,
+    //this.username
+  });
 
 }
