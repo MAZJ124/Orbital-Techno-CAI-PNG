@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nus_spots/models/user.dart';
 import 'globals.dart';
-
+import 'package:flutter_tags/flutter_tags.dart';
 
 final locationsRef = FirebaseFirestore.instance.collection('locations');
 final commentsRef = FirebaseFirestore.instance.collection('comments');
@@ -24,15 +24,14 @@ class _BrowseState extends State<Browse> {
   List _allResults = [];
   List _resultsList = [];
   TextEditingController _searchController = TextEditingController();
-
-
+  final GlobalKey<TagsState> _globalKeyBrowse = GlobalKey<TagsState>();
   //dropdown boxes for the different categories
-  bool aircon = false;
-  bool noAircon = false;
-  bool indoors = false;
-  bool outdoors = false;
-  bool wallplugs = false;
-  bool noWallplugs = false;
+  // bool aircon = false;
+  // bool noAircon = false;
+  // bool indoors = false;
+  // bool outdoors = false;
+  // bool wallplugs = false;
+  // bool noWallplugs = false;
 
   @override
   void initState() {
@@ -47,10 +46,13 @@ class _BrowseState extends State<Browse> {
 
   searchResultsList() {
     var showResults = [];
+
     if (_searchController.text != "") {
       for (var location in _allResults) {
         var title = location['name'].toLowerCase();
-        if (title.contains(_searchController.text.toLowerCase())) {
+        if (title.contains(_searchController.text.toLowerCase())
+            // && location['tags'].any((item) => selectedTags.contains(item))
+        ) {
           showResults.add(location);
         }
       }
@@ -172,114 +174,26 @@ class _BrowseState extends State<Browse> {
               ],
             ),
             SizedBox(height: 15.0),
-            //dropdown of categories
-            DropdownButton(
-              items: [
-                DropdownMenuItem(
-                  child: Row(
-                    children: <Widget>[
-                      StatefulBuilder(
-                        builder: (context, _setState) => Checkbox(
-                          value: this.aircon,
-                          onChanged: (bool value) {
-                            _setState(() {
-                              this.aircon = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Text('Aircon'),
-                    ],
-                  ),
-                ),
-                DropdownMenuItem(
-                  child: Row(
-                    children: <Widget>[
-                      StatefulBuilder(
-                        builder: (context, _setState) => Checkbox(
-                          value: this.noAircon,
-                          onChanged: (bool value) {
-                            _setState(() {
-                              this.noAircon = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Text('No Aircon'),
-                    ],
-                  ),
-                ),
-                DropdownMenuItem(
-                  child: Row(
-                    children: <Widget>[
-                      StatefulBuilder(
-                        builder: (context, _setState) => Checkbox(
-                          value: this.indoors,
-                          onChanged: (bool value) {
-                            _setState(() {
-                              this.indoors = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Text('Indoors'),
-                    ],
-                  ),
-                ),
-                DropdownMenuItem(
-                  child: Row(
-                    children: <Widget>[
-                      StatefulBuilder(
-                        builder: (context, _setState) => Checkbox(
-                          value: this.outdoors,
-                          onChanged: (bool value) {
-                            _setState(() {
-                              this.outdoors = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Text('Outdoors'),
-                    ],
-                  ),
-                ),
-                DropdownMenuItem(
-                  child: Row(
-                    children: <Widget>[
-                      StatefulBuilder(
-                        builder: (context, _setState) => Checkbox(
-                          value: this.wallplugs,
-                          onChanged: (bool value) {
-                            _setState(() {
-                              this.wallplugs = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Text('Wallplugs'),
-                    ],
-                  ),
-                ),
-                DropdownMenuItem(
-                  child: Row(
-                    children: <Widget>[
-                      StatefulBuilder(
-                        builder: (context, _setState) => Checkbox(
-                          value: this.noWallplugs,
-                          onChanged: (bool value) {
-                            _setState(() {
-                              this.noWallplugs = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Text('No Wallplugs'),
-                    ],
-                  ),
-                ),
-              ],
-              onChanged: (value) {},
-              hint: Text('Select tags/categories'),
+            Tags(
+              itemCount: allTags.length,
+              key: _globalKeyBrowse,
+              columns: 3,
+              itemBuilder: (index) {
+                return ItemTags(
+                  onPressed: (item) {
+                    (selectedTags.contains(item.title)) ? (selectedTags.remove(item.title)) :(selectedTags.add(item.title));
+                    // var subAllResults = [];
+                    // for (var location in _allResults){
+                    //   if (location['tags'].any((item) => selectedTags.contains(item))){
+                    //     subAllResults.add(location);
+                    //   }
+                    // }
+                    // _allResults = subAllResults;
+                  },
+                  index: index,
+                  title: allTags[index],
+                );
+              },
             ),
             Expanded(
               child: ListView.builder(

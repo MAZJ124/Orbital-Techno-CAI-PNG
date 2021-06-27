@@ -13,6 +13,7 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
+
   final GlobalKey<TagsState> _globalKey = GlobalKey<TagsState>();
 
   TextEditingController commentController = TextEditingController();
