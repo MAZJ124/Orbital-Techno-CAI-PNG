@@ -40,25 +40,25 @@ class _DetailsState extends State<Details> {
   }
 
   addComment() {
-    commentsRef.doc(locationID).collection("comments").add({
+    var randomDoc = commentsRef
+                  .doc(locationID)
+                  .collection("comments")
+                  .doc();
+
+    commentsRef
+        .doc(locationID)
+        .collection("comments")
+        .doc(randomDoc.id)
+        .set(
+        {
       //"username": currentUser.username,
       "comment": commentController.text,
       "timestamp": timestamp,
+      "commentID": randomDoc.id
       //"userID": currentUser.uid,
-    });
+      },
+    );
     commentController.clear();
-  }
-
-  //TODO: implement ownerID and currentUserID check for this
-  deleteComment( ) {
-    commentsRef.doc(locationID)
-        .collection('comments')
-        .doc()
-        .get().then((doc) {
-      if (doc.exists) {
-        doc.reference.delete();
-      }
-    });
   }
 
   @override
@@ -208,16 +208,19 @@ class Comment extends StatelessWidget {
 
   //final String username;
   final Timestamp timestamp;
+  final String commentID;
 
   Comment({
     this.comment,
-    this.timestamp
+    this.timestamp,
+    this.commentID
   });
 
   factory Comment.fromDocument(DocumentSnapshot doc) {
     return Comment(
-        comment: doc['comment'],
-        timestamp: doc['timestamp']
+        comment: doc.get('comment'),
+        timestamp: doc.get('timestamp'),
+        commentID: doc.get('commentID')
     );
   }
 
@@ -230,7 +233,9 @@ class Comment extends StatelessWidget {
           //leading, image...
           subtitle: Text(timeago.format(timestamp.toDate())),
           trailing: IconButton(
-            onPressed: () => deleteEditComment(context),
+            onPressed: () {
+              deleteEditComment(context, this.commentID);
+              },
             icon: Icon(Icons.more_vert),
           ),
         ),
@@ -240,7 +245,7 @@ class Comment extends StatelessWidget {
   }
 }
 
-deleteEditComment(BuildContext parentContext) {
+deleteEditComment(BuildContext parentContext, String commentID) {
   return showDialog(
     context: parentContext,
     builder: (context) {
@@ -248,6 +253,7 @@ deleteEditComment(BuildContext parentContext) {
         children: <Widget> [
           SimpleDialogOption(
           onPressed: () {
+            deleteComment(commentID);
             Navigator.pop(context);
           },
             child: Text('Delete comment',
@@ -272,5 +278,17 @@ deleteEditComment(BuildContext parentContext) {
       );
     }
   );
+}
+
+//TODO: implement ownerID and currentUserID check for this
+deleteComment(String commentID) {
+  commentsRef.doc(locationID)
+      .collection('comments')
+      .doc(commentID)
+      .get().then((doc) {
+    if (doc.exists) {
+      doc.reference.delete();
+    }
+  });
 }
 
