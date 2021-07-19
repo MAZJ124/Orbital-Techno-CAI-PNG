@@ -226,6 +226,123 @@ class Comment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    //TODO: implement ownerID and currentUserID check for this
+    void deleteComment(String commentID) {
+      commentsRef.doc(locationID)
+          .collection('comments')
+          .doc(commentID)
+          .get().then((doc) {
+        if (doc.exists) {
+          doc.reference.delete();
+        }
+      });
+    }
+
+    void updateComment(String commentID, String val) {
+      commentsRef.doc(locationID)
+          .collection('comments')
+          .doc(commentID)
+          .get().then((doc) {
+            if (doc.exists) {
+              doc.reference.update(
+                {'comment': val,}
+              );
+            }
+          });
+    }
+
+    void _editCommentPanel(String commentID) {
+      showModalBottomSheet(context: context, builder: (context) {
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget> [
+                Text(
+                  'Edit your comment',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+                SizedBox(height: 20.0),
+                TextFormField(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: 0.1, horizontal: 0.1) ,
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (val) => val.isEmpty ? 'Please write a comment' : null,
+                  onChanged: (val) => updateComment(commentID, val),
+                ),
+                SizedBox(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    RaisedButton(
+                        color: Colors.pink[400],
+                        onPressed: () {
+                          Navigator.pop(context);
+
+                        },
+                      child: Text(
+                        'Update',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    RaisedButton(
+                      color: Colors.pink[400],
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      });
+    }
+
+
+    deleteEditComment(BuildContext parentContext, String commentID) {
+      return showDialog(
+          context: parentContext,
+          builder: (context) {
+            return SimpleDialog(
+              children: <Widget> [
+                SimpleDialogOption(
+                    onPressed: () {
+                      deleteComment(commentID);
+                      Navigator.pop(context);
+                    },
+                    child: Text('Delete comment',
+                      style: TextStyle(color: Colors.red),
+                    )
+                ),
+                SimpleDialogOption(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _editCommentPanel(commentID);
+                    },
+                    child: Text('Edit comment',
+                      style: TextStyle(color: Colors.red),
+                    )
+                ),
+                SimpleDialogOption(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('Cancel',
+                      style: TextStyle(color: Colors.red),
+                    )
+                ),
+              ],
+            );
+          }
+      );
+    }
+
     return Column(
       children: <Widget>[
         ListTile(
@@ -245,50 +362,6 @@ class Comment extends StatelessWidget {
   }
 }
 
-deleteEditComment(BuildContext parentContext, String commentID) {
-  return showDialog(
-    context: parentContext,
-    builder: (context) {
-      return SimpleDialog(
-        children: <Widget> [
-          SimpleDialogOption(
-          onPressed: () {
-            deleteComment(commentID);
-            Navigator.pop(context);
-          },
-            child: Text('Delete comment',
-              style: TextStyle(color: Colors.red),
-            )
-          ),
-          SimpleDialogOption(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-              child: Text('Edit comment',
-                style: TextStyle(color: Colors.red),
-              )
-          ),
-          SimpleDialogOption(
-              onPressed: () => Navigator.pop(context),
-              child: Text('Cancel',
-                style: TextStyle(color: Colors.red),
-              )
-          ),
-        ],
-      );
-    }
-  );
-}
 
-//TODO: implement ownerID and currentUserID check for this
-deleteComment(String commentID) {
-  commentsRef.doc(locationID)
-      .collection('comments')
-      .doc(commentID)
-      .get().then((doc) {
-    if (doc.exists) {
-      doc.reference.delete();
-    }
-  });
-}
+
 
