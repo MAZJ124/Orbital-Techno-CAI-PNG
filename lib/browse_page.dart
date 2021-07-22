@@ -25,13 +25,6 @@ class _BrowseState extends State<Browse> {
   List _resultsList = [];
   TextEditingController _searchController = TextEditingController();
   final GlobalKey<TagsState> _globalKeyBrowse = GlobalKey<TagsState>();
-  //dropdown boxes for the different categories
-  // bool aircon = false;
-  // bool noAircon = false;
-  // bool indoors = false;
-  // bool outdoors = false;
-  // bool wallplugs = false;
-  // bool noWallplugs = false;
 
   @override
   void initState() {
@@ -50,9 +43,7 @@ class _BrowseState extends State<Browse> {
     if (_searchController.text != "") {
       for (var location in _allResults) {
         var title = location['name'].toLowerCase();
-        if (title.contains(_searchController.text.toLowerCase())
-            // && location['tags'].any((item) => selectedTags.contains(item))
-        ) {
+        if (title.contains(_searchController.text.toLowerCase())) {
           showResults.add(location);
         }
       }
