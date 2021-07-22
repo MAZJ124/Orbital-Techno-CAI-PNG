@@ -6,6 +6,10 @@ import 'package:provider/provider.dart';
 import 'blocs/application_bloc.dart';
 import 'dart:async';
 import 'models/place.dart';
+import 'globals.dart';
+// import 'models/geometry.dart';
+// import 'models/location.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 class Map extends StatefulWidget {
   const Map({Key key}) : super(key: key);
@@ -18,6 +22,11 @@ class _MapState extends State<Map> {
   Completer<GoogleMapController> _mapController = Completer();
   StreamSubscription locationSubscription;
   final fireStore = FirebaseFirestore.instance;
+
+  //trial for route finder
+  Set<Polyline> polylines = {};
+  List<LatLng> polylineCoordinates = [];
+  PolylinePoints polylinePoints = PolylinePoints();
 
   @override
   void initState() {
@@ -49,6 +58,74 @@ class _MapState extends State<Map> {
   @override
   Widget build(BuildContext context) {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
+
+    //Attempt for go to map feature (does not work)
+    // if (currentLat != null && currentLng != null) {
+    //   _goToPlace(Place(geometry: Geometry(location: Location(lat: currentLat, lng: currentLng))));
+    // }
+    // currentLat = 500;
+    // currentLng = 500;
+
+    void setPolylines() async {
+      print(currentLat);
+      print(currentLng);
+      print(applicationBloc.currentLocation.latitude);
+      print(applicationBloc.currentLocation.longitude);
+      print(polylines.isEmpty);
+      PolylineResult result = await
+      polylinePoints.getRouteBetweenCoordinates(
+          'AIzaSyAK6ZnJUF2IqiyeyccoqX215Tm-SoLFc7E',
+          // 'AIzaSyAbJKG6Q97kA_SXrvQ_sNPV05GHJelzXR4',
+        // 'AIzaSyC6Vq2RH4XM4Lm3wpAYDxCJuSsQWSuf5yM',
+          PointLatLng(
+              applicationBloc.currentLocation.latitude,
+              applicationBloc.currentLocation.longitude,
+          ),
+          PointLatLng(
+              (currentLat != null) ? currentLat : applicationBloc.currentLocation.latitude,
+              (currentLng != null) ? currentLng : applicationBloc.currentLocation.longitude,
+          ), //destination coordinates
+      );
+      print(result.status);
+      print(polylines.isEmpty);
+      if (result.status == "OK"){
+        // loop through all PointLatLng points and convert them
+        // to a list of LatLng, required by the Polyline
+        result.points.forEach((PointLatLng point){
+          polylineCoordinates.add(
+              LatLng(point.latitude, point.longitude));
+        });
+
+        setState(() {
+          polylines.add(
+              Polyline(
+                width: 10,
+                polylineId: PolylineId('polyLine'),
+                color: Color(0xFF08A5CB),
+                points: polylineCoordinates,
+              )
+          );
+        });
+        print(polylines.isEmpty);
+      }
+      // setState(() {
+      //   // create a Polyline instance
+      //   // with an id, an RGB color and the list of LatLng pairs
+      //   Polyline polyline = Polyline(
+      //     polylineId: PolylineId('poly'),
+      //     color: Color(0xFF08A5CB),
+      //     points: polylineCoordinates,
+      //   );
+      //
+      //   // add the constructed polyline as a set of points
+      //   // to the polyline set, which will eventually
+      //   // end up showing up on the map
+      //   polylines.add(polyline);
+      // });
+
+    }
+
+
 
     return Scaffold(
       body: (applicationBloc.currentLocation == null)
@@ -85,6 +162,7 @@ class _MapState extends State<Map> {
                         final locations = snapshot.data.docs;
                         Set<Marker> set = {};
 
+
                         for (var location in locations) {
                           final markerId = location['name'];
                           final lat = location['lat'];
@@ -104,14 +182,18 @@ class _MapState extends State<Map> {
                             myLocationEnabled: true,
                             initialCameraPosition: CameraPosition(
                               target: LatLng(
+                                  // (currentLat != null) ? currentLat :
                                   applicationBloc.currentLocation.latitude,
+                                  // (currentLng != null) ? currentLng :
                                   applicationBloc.currentLocation.longitude),
                               zoom: 15,
                             ),
                             onMapCreated: (GoogleMapController controller) {
                               _mapController.complete(controller);
+                              setPolylines();
                             },
                             markers: set,
+                            polylines: polylines,
                           ),
                         );
                       },
@@ -177,3 +259,4 @@ Marker customMarker({String markerId, double lat, double lng}) {
     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
   );
 }
+

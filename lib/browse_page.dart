@@ -197,6 +197,8 @@ class _BrowseState extends State<Browse> {
                         locationName = _resultsList[index]['name'];
                         imageURL = _resultsList[index]['image'];
                         tags = List.from(_resultsList[index]['tags']);
+                        currentLat = _resultsList[index]['lat'];
+                        currentLng = _resultsList[index]['lng'];
                         Navigator.pushNamed(context, '/details');
                       },
                       title: Text(_resultsList[index]['name']),
