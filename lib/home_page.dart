@@ -63,12 +63,12 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 icon: Icon(
-                  Icons.fastfood_rounded,
+                  Icons.map,
                   color: Colors.green,
                   size: 50.0,
                 ),
                 label: Text(
-                  'EAT',
+                  'MAP',
                   style: TextStyle(
                     fontSize: 40.0,
                     color: Colors.green,
@@ -80,7 +80,7 @@ class _HomeState extends State<Home> {
             Expanded(
               child: TextButton.icon(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/map');
+                  Navigator.pushNamed(context, '/custom');
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.black12),
@@ -96,7 +96,7 @@ class _HomeState extends State<Home> {
                   size: 50.0,
                 ),
                 label: Text(
-                  'STUDY',
+                  'CUSTOMIZE',
                   style: TextStyle(
                     fontSize: 40.0,
                     color: Colors.green,

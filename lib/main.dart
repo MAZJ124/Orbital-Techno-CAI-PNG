@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nus_spots/blocs/application_bloc.dart';
+import 'package:nus_spots/custom_page.dart';
 import 'package:nus_spots/models/user.dart';
 import 'package:nus_spots/services/auth_service.dart';
 import 'package:nus_spots/wrapper.dart';
@@ -39,6 +40,7 @@ class NUSpots extends StatelessWidget {
             '/map': (context) => Map(),//change this to preview
             '/options': (context) => Browse(),
             '/details': (context) => Details(),
+            '/custom': (context) => Custom(),
           },
         ),
       ),
