@@ -10,6 +10,18 @@ class Custom extends StatefulWidget {
   _CustomState createState() => _CustomState();
 }
 
+var tagValues = [
+  false, //aircon
+  false, //wall plug
+  false, //vege
+  false, //halal
+  false, //indoors
+  false //bus stop nearby
+];
+
+// var tagValuesMap = tagValues.asMap();
+List<String> currentTags =[];
+
 class _CustomState extends State<Custom> {
 
   final _formKey = GlobalKey<FormState>();
@@ -18,8 +30,8 @@ class _CustomState extends State<Custom> {
   String locName = '';
   String imgURL = '';
   String category = '';
-  //String tags = '';
   String error = '';
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +81,42 @@ class _CustomState extends State<Custom> {
                 ),
               ),
               SizedBox(height: 20.0),
+              DropdownButtonFormField(
+                items: allTags.map((tag){
+                  var index = allTags.indexOf(tag);
+                  return DropdownMenuItem(
+                    child: Row(
+                      children: <Widget>[
+                        StatefulBuilder(
+                          builder: (context, setState) => Checkbox(
+                              //value: tagValuesMap[index],
+                              value: tagValues[index],
+                              onChanged: (bool value) {
+                                setState(() {
+                                  tagValues[index] = value;
+                                  if (tagValues[index] == true) {
+                                    currentTags.add(allTags[index]);
+                                  } else {
+                                    currentTags.removeWhere(
+                                        (item) => item == allTags[index]
+                                    );
+                                  }
+                                });
+                              },
+                          ),
+                        ),
+                        Text('$tag'),
+                      ],
+                    ),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                },
+                decoration:  new InputDecoration(
+                    hintText: 'Choose tags'
+                ),
+              ),
+              SizedBox(height: 20.0),
               TextFormField(
                   onChanged: (val) {
                     setState(() => imgURL = val);
@@ -93,6 +141,13 @@ class _CustomState extends State<Custom> {
                       error = '';
                       Navigator.pushNamed(context, '/home');
                     }
+
+
+                    print(locName);
+                    print(category);
+                    print(currentTags);
+                    print(imgURL);
+
                   }
               ),
                SizedBox(height: 12.0),
