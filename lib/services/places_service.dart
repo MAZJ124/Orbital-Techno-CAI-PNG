@@ -4,7 +4,7 @@ import 'package:nus_spots/models/place_search.dart';
 import 'package:nus_spots/models/place.dart';
 
 class PlacesService{
-  final key = 'AIzaSyAK6ZnJUF2IqiyeyccoqX215Tm-SoLFc7E';
+  final key = 'AIzaSyCLv6qOhkAcvRUhb4WSCKLL-P5AtBktr6E';
 
   Future<List<PlaceSearch>> getAutoComplete(String search) async{
     var url =

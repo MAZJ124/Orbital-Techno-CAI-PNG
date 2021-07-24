@@ -112,7 +112,7 @@ class _DetailsState extends State<Details> {
                       size: 10.0,
                     ),
                     label: Text(
-                      'Go to Map',
+                      'Find Route',
                       style: TextStyle(
                         fontSize: 17.0,
                         color: Colors.green[700],

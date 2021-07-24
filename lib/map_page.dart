@@ -67,14 +67,9 @@ class _MapState extends State<Map> {
     // currentLng = 500;
 
     void setPolylines() async {
-      print(currentLat);
-      print(currentLng);
-      print(applicationBloc.currentLocation.latitude);
-      print(applicationBloc.currentLocation.longitude);
-      print(polylines.isEmpty);
       PolylineResult result = await
       polylinePoints.getRouteBetweenCoordinates(
-          'AIzaSyAK6ZnJUF2IqiyeyccoqX215Tm-SoLFc7E',
+          'AIzaSyCLv6qOhkAcvRUhb4WSCKLL-P5AtBktr6E',
           // 'AIzaSyAbJKG6Q97kA_SXrvQ_sNPV05GHJelzXR4',
         // 'AIzaSyC6Vq2RH4XM4Lm3wpAYDxCJuSsQWSuf5yM',
           PointLatLng(
@@ -84,11 +79,12 @@ class _MapState extends State<Map> {
           PointLatLng(
               (currentLat != null) ? currentLat : applicationBloc.currentLocation.latitude,
               (currentLng != null) ? currentLng : applicationBloc.currentLocation.longitude,
-          ), //destination coordinates
+          ),
+          travelMode: TravelMode.walking,//destination coordinates
       );
       print(result.status);
       print(polylines.isEmpty);
-      if (result.status == "OK"){
+      if (result.points.isNotEmpty){
         // loop through all PointLatLng points and convert them
         // to a list of LatLng, required by the Polyline
         result.points.forEach((PointLatLng point){
