@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nus_spots/services/auth_service.dart';
+import 'globals.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
@@ -52,6 +53,8 @@ class _HomeState extends State<Home> {
             Expanded(
               child: TextButton.icon(
                 onPressed: () {
+                  currentLat = null;
+                  currentLng = null;
                   Navigator.pushNamed(context, '/map');
                 },
                 style: ButtonStyle(
