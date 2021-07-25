@@ -97,6 +97,7 @@ class _DetailsState extends State<Details> {
                 children: [
                   Container(
                     //name of location
+                    width: 200.0,
                     child: Text(
                       '$locationName',
                       style: TextStyle(

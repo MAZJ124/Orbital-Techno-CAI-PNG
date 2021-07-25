@@ -212,6 +212,7 @@ class _BrowseState extends State<Browse> {
                 );
               },
             ),
+            SizedBox(height: 15.0),
             Expanded(
               child: ListView.builder(
                 itemCount: _resultsList.length,
