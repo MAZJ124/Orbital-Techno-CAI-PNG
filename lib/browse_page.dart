@@ -3,6 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:nus_spots/models/user.dart';
 import 'globals.dart';
 import 'package:flutter_tags/flutter_tags.dart';
+import 'dart:math' show cos, sqrt, asin;
+
+//function to calculate distance between 2 locations given both latlngs
+double calculateDistance(lat1, lon1, lat2, lon2){
+  var p = 0.017453292519943295;
+  var c = cos;
+  var a = 0.5 - c((lat2 - lat1) * p)/2 +
+      c(lat1 * p) * c(lat2 * p) *
+          (1 - c((lon2 - lon1) * p))/2;
+  return 12742 * asin(sqrt(a));
+}
 
 final locationsRef = FirebaseFirestore.instance.collection('locations');
 final commentsRef = FirebaseFirestore.instance.collection('comments');
@@ -76,6 +87,21 @@ class _BrowseState extends State<Browse> {
     });
     searchResultsList();
     return 'done';
+  }
+
+  getNearbyLocations(currLat, currLong) {
+    var nearLoc = [];
+    int index = 0;
+    for (var location in _allResults) {
+      var distanceFrom = calculateDistance(currLat, currLong, _allResults[index]['lat'], _allResults[index]['lng'] );
+      if (distanceFrom < 0.25 && distanceFrom > 0) {
+        nearLoc.add(location);
+      }
+      index++;
+    }
+    setState(() {
+      nearbyLocations = nearLoc;
+    });
   }
 
   @override
@@ -199,6 +225,9 @@ class _BrowseState extends State<Browse> {
                         tags = List.from(_resultsList[index]['tags']);
                         currentLat = _resultsList[index]['lat'];
                         currentLng = _resultsList[index]['lng'];
+
+                        getNearbyLocations(currentLat, currentLng);
+
                         Navigator.pushNamed(context, '/details');
                       },
                       title: Text(_resultsList[index]['name']),

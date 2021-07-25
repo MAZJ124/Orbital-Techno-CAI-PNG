@@ -40,7 +40,7 @@ class NUSpots extends StatelessWidget {
             '/map': (context) => Map(),//change this to preview
             '/options': (context) => Browse(),
             '/details': (context) => Details(),
-            '/custom': (context) => Custom(),
+            '/custom': (context) => Custom()
           },
         ),
       ),

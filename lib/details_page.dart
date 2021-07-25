@@ -18,6 +18,18 @@ class _DetailsState extends State<Details> {
 
   TextEditingController commentController = TextEditingController();
 
+  //var data = locationsRef.get();
+  /*List allLocations = [];
+
+  getLocations() async {
+    var data = await locationsRef.get();
+    setState(() {
+      allLocations = data.docs;
+    });
+    return 'done';
+  }*/
+
+
   buildComments() {
     return StreamBuilder(
         stream: commentsRef.doc(locationID).collection('comments').
@@ -88,7 +100,7 @@ class _DetailsState extends State<Details> {
                     child: Text(
                       '$locationName',
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 23.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -114,7 +126,7 @@ class _DetailsState extends State<Details> {
                     label: Text(
                       'Find Route',
                       style: TextStyle(
-                        fontSize: 17.0,
+                        fontSize: 15.0,
                         color: Colors.green[700],
                       ),
                     ),
@@ -161,6 +173,49 @@ class _DetailsState extends State<Details> {
                       },
                     ),
                   ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Nearby NUSpots',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Divider(
+                height: 10,
+                thickness: 2,
+                color: Colors.black54,
+              ),
+              SizedBox(height: 20),
+              SizedBox(
+                height: 250,
+                child: ListView.builder(
+                  /*physics: NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,*/
+                  //shrinkWrap: true,
+                  itemCount: nearbyLocations.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: ListTile(
+                        onTap: () {
+                          locationID = nearbyLocations[index]['locationID'];
+                          locationName = nearbyLocations[index]['name'];
+                          imageURL = nearbyLocations[index]['image'];
+                          tags = List.from(nearbyLocations[index]['tags']);
+                          currentLat = nearbyLocations[index]['lat'];
+                          currentLng = nearbyLocations[index]['lng'];
+                          Navigator.pushNamed(context, '/details');
+                        },
+                        title: Text(nearbyLocations[index]['name']),
+                        trailing: Icon(Icons.keyboard_arrow_right),
+                      ),
+                    );
+                  },
                 ),
               ),
               SizedBox(height: 20),
