@@ -50,11 +50,20 @@ class _BrowseState extends State<Browse> {
 
   searchResultsList() {
     var showResults = [];
-
+    List<String> comparedTags = (selectedTags.isEmpty) ? allTags : selectedTags;
+    print("[");
+    for (var tag in comparedTags) print(tag);
+    print("]");
     if (_searchController.text != "") {
       for (var location in _allResults) {
         var title = location['name'].toLowerCase();
-        if (title.contains(_searchController.text.toLowerCase())) {
+        var containsTag = true;
+        for (var tag in comparedTags) {
+          if (!location['tags'].contains(tag)) {
+            containsTag = false;
+          }
+        }
+        if (title.contains(_searchController.text.toLowerCase()) && containsTag) {
           showResults.add(location);
         }
       }
@@ -198,7 +207,10 @@ class _BrowseState extends State<Browse> {
               itemBuilder: (index) {
                 return ItemTags(
                   onPressed: (item) {
-                    (selectedTags.contains(item.title)) ? (selectedTags.remove(item.title)) :(selectedTags.add(item.title));
+                    setState(() {
+                      (selectedTags.contains(item.title)) ? (selectedTags.remove(item.title)) :(selectedTags.add(item.title));
+                    });
+                    // for (var tag in selectedTags) print(tag);
                     // var subAllResults = [];
                     // for (var location in _allResults){
                     //   if (location['tags'].any((item) => selectedTags.contains(item))){
