@@ -10,6 +10,8 @@ import 'globals.dart';
 // import 'models/geometry.dart';
 // import 'models/location.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/foundation.dart';
 
 class Map extends StatefulWidget {
   const Map({Key key}) : super(key: key);
@@ -174,6 +176,21 @@ class _MapState extends State<Map> {
                           height: MediaQuery.of(context).size.height,
                           width: MediaQuery.of(context).size.width,
                           child: GoogleMap(
+
+                            zoomControlsEnabled: false,
+                            zoomGesturesEnabled: true,
+                            scrollGesturesEnabled: true,
+                            compassEnabled: true,
+                            rotateGesturesEnabled: true,
+                            mapToolbarEnabled: true,
+                            tiltGesturesEnabled: true,
+                            gestureRecognizers: < Factory < OneSequenceGestureRecognizer >> [
+                              new Factory < OneSequenceGestureRecognizer > (
+                                    () => new EagerGestureRecognizer(),
+                              ),
+                            ].toSet(),
+
+
                             mapType: MapType.normal,
                             myLocationEnabled: true,
                             initialCameraPosition: CameraPosition(
