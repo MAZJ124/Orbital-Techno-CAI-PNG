@@ -4,6 +4,16 @@ import 'globals.dart';
 import 'browse_page.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'dart:math' show cos, sqrt, asin;
+
+double calculateDistance(lat1, lon1, lat2, lon2){
+  var p = 0.017453292519943295;
+  var c = cos;
+  var a = 0.5 - c((lat2 - lat1) * p)/2 +
+      c(lat1 * p) * c(lat2 * p) *
+          (1 - c((lon2 - lon1) * p))/2;
+  return 12742 * asin(sqrt(a));
+}
 
 class Details extends StatefulWidget {
   const Details({Key key}) : super(key: key);
@@ -19,7 +29,8 @@ class _DetailsState extends State<Details> {
   TextEditingController commentController = TextEditingController();
 
   //var data = locationsRef.get();
-  /*List allLocations = [];
+  List allLocations = [];
+  Future resultsLoaded;
 
   getLocations() async {
     var data = await locationsRef.get();
@@ -27,7 +38,28 @@ class _DetailsState extends State<Details> {
       allLocations = data.docs;
     });
     return 'done';
-  }*/
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    resultsLoaded = getLocations();
+  }
+
+  getNearbyLocations(currLat, currLong) {
+    var nearLoc = [];
+    int index = 0;
+    for (var location in allLocations) {
+      var distanceFrom = calculateDistance(currLat, currLong, allLocations[index]['lat'], allLocations[index]['lng'] );
+      if (distanceFrom < 0.25 && distanceFrom > 0) {
+        nearLoc.add(location);
+      }
+      index++;
+    }
+    setState(() {
+      nearbyLocations = nearLoc;
+    });
+  }
 
 
   buildComments() {
@@ -211,6 +243,8 @@ class _DetailsState extends State<Details> {
                           currentLat = nearbyLocations[index]['lat'];
                           currentLng = nearbyLocations[index]['lng'];
                           Navigator.pushNamed(context, '/details');
+
+                          getNearbyLocations(currentLat, currentLng);
                         },
                         title: Text(nearbyLocations[index]['name']),
                         trailing: Icon(Icons.keyboard_arrow_right),
