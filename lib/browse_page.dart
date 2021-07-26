@@ -5,8 +5,11 @@ import 'globals.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'dart:math' show cos, sqrt, asin;
 
+const Color selectedColor = Colors.green;
+const Color unselectedColor = Colors.black26;
+
 //function to calculate distance between 2 locations given both latlngs
-double calculateDistance(lat1, lon1, lat2, lon2){
+double calculateDistance(lat1, lon1, lat2, lon2) {
   var p = 0.017453292519943295;
   var c = cos;
   var a = 0.5 - c((lat2 - lat1) * p)/2 +
@@ -36,6 +39,11 @@ class _BrowseState extends State<Browse> {
   List _resultsList = [];
   TextEditingController _searchController = TextEditingController();
   final GlobalKey<TagsState> _globalKeyBrowse = GlobalKey<TagsState>();
+  Color studyColor = unselectedColor;
+  Color eatColor = unselectedColor;
+  Color allColor = selectedColor;
+  String currentCategory = "all";
+  var touched = false;
 
   @override
   void initState() {
@@ -51,19 +59,21 @@ class _BrowseState extends State<Browse> {
   searchResultsList() {
     var showResults = [];
     List<String> comparedTags = (selectedTags.isEmpty) ? allTags : selectedTags;
-    print("[");
-    for (var tag in comparedTags) print(tag);
-    print("]");
-    if (_searchController.text != "") {
+    if (_searchController.text != "" || touched) {
       for (var location in _allResults) {
         var title = location['name'].toLowerCase();
+        var category = location['category'];
+        var correctCategory = false;
         var containsTag = true;
-        for (var tag in comparedTags) {
+        for (var tag in selectedTags) {
           if (!location['tags'].contains(tag)) {
             containsTag = false;
           }
         }
-        if (title.contains(_searchController.text.toLowerCase()) && containsTag) {
+        if (currentCategory == "all" || (category == currentCategory || category == "both")) {
+          correctCategory = true;
+        }
+        if (title.contains(_searchController.text.toLowerCase()) && containsTag && correctCategory) {
           showResults.add(location);
         }
       }
@@ -74,6 +84,7 @@ class _BrowseState extends State<Browse> {
       _resultsList = showResults;
     });
   }
+
 
   @override
   void didChangeDependencies() {
@@ -137,6 +148,7 @@ class _BrowseState extends State<Browse> {
               padding: EdgeInsets.all(8.0),
               child: TextField(
                 controller: _searchController,
+                // onChanged: _onSearchChanged(),
                 autofocus: true,
                 decoration: InputDecoration(
                   hintText: ' Search',
@@ -152,9 +164,18 @@ class _BrowseState extends State<Browse> {
                   child: TextButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Colors.black26),
+                          MaterialStateProperty.all(studyColor),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        studyColor = selectedColor;
+                        eatColor = unselectedColor;
+                        allColor = unselectedColor;
+                        currentCategory = "study";
+                        touched = true;
+                        getLocations();
+                      });
+                    },
                     child: Text(
                       'Study',
                       style: TextStyle(
@@ -169,9 +190,18 @@ class _BrowseState extends State<Browse> {
                   child: TextButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Colors.black26),
+                          MaterialStateProperty.all(eatColor),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        studyColor = unselectedColor;
+                        eatColor = selectedColor;
+                        allColor = unselectedColor;
+                        currentCategory = "food";
+                        touched = true;
+                        getLocations();
+                      });
+                    },
                     child: Text(
                       'Eat',
                       style: TextStyle(
@@ -185,9 +215,18 @@ class _BrowseState extends State<Browse> {
                 Expanded(
                   child: TextButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                      backgroundColor: MaterialStateProperty.all(allColor),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        studyColor = unselectedColor;
+                        eatColor = unselectedColor;
+                        allColor = selectedColor;
+                        currentCategory = "all";
+                        touched = true;
+                        getLocations();
+                      });
+                    },
                     child: Text(
                       'All',
                       style: TextStyle(
@@ -209,15 +248,9 @@ class _BrowseState extends State<Browse> {
                   onPressed: (item) {
                     setState(() {
                       (selectedTags.contains(item.title)) ? (selectedTags.remove(item.title)) :(selectedTags.add(item.title));
+                      touched = true;
+                      getLocations();
                     });
-                    // for (var tag in selectedTags) print(tag);
-                    // var subAllResults = [];
-                    // for (var location in _allResults){
-                    //   if (location['tags'].any((item) => selectedTags.contains(item))){
-                    //     subAllResults.add(location);
-                    //   }
-                    // }
-                    // _allResults = subAllResults;
                   },
                   index: index,
                   title: allTags[index],
